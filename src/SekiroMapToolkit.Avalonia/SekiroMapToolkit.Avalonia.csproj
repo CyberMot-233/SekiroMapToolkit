@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <AssemblyName>SekiroMapToolkit</AssemblyName>
+    <RootNamespace>SekiroMapToolkit</RootNamespace>
+    <Version>1.5.0</Version>
+    <FileVersion>1.5.0.0</FileVersion>
+    <Product>只狼地图导出工具集</Product>
+    <Company>Hoshino486</Company>
+    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+    <NoWarn>CS0169;CS0649;CS8632;CS8600;CS8602;CS8604</NoWarn>
+    <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.3" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.0" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="NAudio.WinMM" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SekiroMapToolkit\Core\*.cs" Link="Core\%(Filename)%(Extension)" />
+    <Reference Include="SoulsFormats">
+      <HintPath>..\SekiroMapToolkit\libs\SoulsFormats.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="SoulsAssetPipeline">
+      <HintPath>..\SekiroMapToolkit\libs\SoulsAssetPipeline.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="Havoc">
+      <HintPath>..\SekiroMapToolkit\libs\Havoc.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <None Include="..\SekiroMapToolkit\libs\oo2core_6_win64.dll" Link="oo2core_6_win64.dll"
+          Condition="Exists('..\SekiroMapToolkit\libs\oo2core_6_win64.dll')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Resources\**" />
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Res\TAE.Template.SDT.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

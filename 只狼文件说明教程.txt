@@ -1,0 +1,60 @@
+
+
+下载地址
+https://github.com/Nordgaren/UXM-Selective-Unpack
+进入网址后点击右侧Releases，下载软件同名压缩包（一般为zip，rar，7z等后缀），并解压
+基本界面
+
+各按钮功能
+Browse：浏览并选择需要解包的exe文件
+Explore：打开当前选择的exe文件所在文件夹
+Unpack：开始解包游戏文件
+View Files和Use Selected Files：勾选Use Selected Files后，再使用View Files勾选特定文件，Unpack将只解包选定的文件，即部分解包
+Patch：修改exe文件使其加载解包文件而不是原本的文件（要注意如果没有解包使用这个功能会让游戏闪退，只狼使用mod引擎即可，这个功能用不上）
+Restore：恢复游戏根目录的原貌，即删除所有解包文件
+Abort：终止当前操作
+
+基本流程
+下载并解压后，运行UXM.exe；
+程序会自动选择sekiro.exe的游戏路径（若非steam正版只狼用户，则需要自行查找路径）；
+点击“解压”进行解包；
+等待进度条完成。
+解包文件分类
+解包完成后，游戏文件夹内会新增多个文件夹，这些文件夹分别对应不同功能的游戏文件：
+
+action：里面有hks（havokscript），与敌人和玩家的行为定义有关，可能是AI程序和动作之间关联的桥梁；
+
+chr：“anibnd”文件为玩家和敌人的动作性能，可用AnimStudio查看或编辑；“behbnd”文件为人物的行为注册等，当前可用HkxConverter.dll解包，再用vscode等文本工具进行编辑；“chrbnd”文件为角色的模型和贴图（部分敌人无贴图）；“texbnd”为贴图文件，部分包含模型的贴图，也有一些敌人的贴图文件在chrbnd中，而texbnd中只有一些其他贴图（如永真脖子上的伤口），顾名思义，tex代表texture；
+
+cutscene：过场动画中，相关角色的骨骼运动等；暂时不知道如何编辑，但是已知文件名和cg编号一一对应；
+
+event：事件，可用DarkScript查看或编辑；
+
+facegen：魂系列祖传下来的捏脸系统；只狼的facegen用途未知，内含两个脸的图片；
+
+font：字体文件，dbgfont文件为开发者菜单使用的字体（可用Yabber解包后用PhotoShop编辑），其他文件夹按照“语言+地区_用途”进行命名，如zhoch_map意味着中文+中国_地图提示文字。zhoch为简体中文，后缀map为跨地图时游戏中显示的文本所使用的字体，后缀std则为其他情况下使用的字体，如道具介绍等，后缀texteffect顾名思义则为一些效果类文字的字体（但是这个似乎并没有实际用途）；
+
+map：地图文件，一般地图编辑器仅用于编辑map/mapstudio中的文件，这些文件定义了每个地图中有哪些敌人、有哪些物品、敌人和物品的位置、出现的条件以及一些相关参数；
+
+menu：.gfx文件定义了图片文件如何划分网格以及每个网格对应的编号等等，hi文件夹和low文件夹分别表示high和low，也就是高清图片文件和低清图片文件，可用Yabber解包并用Photoshop编辑；menu中包含游戏中的各类图片素材，如教程配图，buff图标，各种载入页面背景，各种再战配图，各种鬼佛图片等等……
+
+msg：文本文件，按照“语言+地区_用途”进行命名，每个语言内的item文件包含NPC名称、道具、技能等描述，menu文件则为各种菜单选项以及对话，可用Yabber解包及解码；
+
+mtd：材质文件，负责管理模型的贴图，可以用MTD Editor编辑和查看；
+
+obj：物品文件，如宝箱、火把、屏风等；其中007系列为植被，253系列为建筑模型，00909系列为山体（低模或贴图）。物品文件类型.flver可用FlverEditor导出为dae格式，或者Bloodborn Model Tool导出为保留绑定信息的.smd格式。需要注意的是，两种方法提取出来的模型UV有存在差异的可能，其中FlverEditor导出模型UV可以完美配适使用Yabber解包后.tpf文件中的贴图。在.tpf文件中，贴图后缀a（Albedo）为漫反射（颜色）贴图，n后缀为法线（Normal）贴图，也可视为粗糙度（Roughness）\ 金属度（Metallic）贴图和高度（Hight）——考虑到节省游戏性能的特点，这里更有可能为bump类型——贴图的合并，可使用渲染器的RGB通道提取功能分别从B通道和G通道中提取。
+
+other：和游戏内通用污渍图（decal texture）以及一部分地形贴图(map texture)有关；
+
+param：顾名思义为parameter，其中drawparam文件夹内含渲染参数，如光照设置等；gameparam则为游戏参数，可直接用参数编辑工具或者Yapped进行查看和编辑，但是用Yabber解包后便无法直接编辑；graphicsconfig包含各类图形显示参数；
+
+parts：玩家的所有模型，am=arm, bd=body, fc=face, hd=head（实际上应该是头发）, lg=leg, wp=weapon，靠前的_m表示male；此文件夹内包含原皮、所有皮肤、废案皮肤，wp开头的包含楔丸、不死斩和所有义手忍具；还有一些文件，后缀_I表示“模型备份”，后缀_m表示“贴图备份”；90XX和91XX为狼的外观文件（头的话为01X0或02X0），其他的为废案（如9500,991X等等）；武器300为楔丸，310为拜泪，7XX为忍具，其他的为废案（如9XXX）；parts里的文件用Yabber解包后可以使用FlverEditor进行修改，tpf后缀文件可以再用Yabber解包后用Photoshop修改；
+
+script：脚本文件，大多数为敌人的AI文件，包括行为逻辑和战斗逻辑，需要使用Yabber解包后再用LuaDecompiler进行解码；talk文件夹内包含与对话、鬼佛功能有关的信息，用Yabber解包后无法编辑，需要用Esdtool解包；
+
+sfx：视觉特效文件；解包后内含三个文件夹：effect视觉效果，用FXMLR进行编辑解包、编辑和打包，使用方法和Yabber基本一样；model模型，用FlverEditor进行修改；tex贴图，用Yabber解包后再用PhotoShop编辑；
+
+sound：音频文件，可用DSSI读取和替换；fsb文件为fmod sound bank，也就是fmod制作的音频包（内含多个音频），fev为fmod event，即播放音频时用于控制的事件，指导了fsb中的音频应该何时按何顺序播放；可以使用fmod studio实现新增音频；
+_backup和_unknown分别表示备份和未知(unkown里也会包括重复解出的文件），实际用途未知。
+
+只狼文件人物编号 浏览器打开飞书：https://fcnx02eeaa4w.feishu.cn/docx/UPmtdWP9jogw9Kx9ThdcwqcdnMd

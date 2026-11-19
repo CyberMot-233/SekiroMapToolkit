@@ -1,0 +1,819 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="SekiroMapToolkit.UI.MainWindow"
+        Title="只狼地图导出工具集 · SEKIRO MAP TOOLKIT"
+        Width="1440" Height="900" MinWidth="1180" MinHeight="720"
+        WindowStartupLocation="CenterScreen"
+        SystemDecorations="None"
+        ExtendClientAreaToDecorationsHint="True"
+        TransparencyLevelHint="Mica,Blur,Transparent"
+        Background="Transparent">
+
+  <Border x:Name="Shell" CornerRadius="14" ClipToBounds="True"
+          Background="{DynamicResource BgBase}"
+          BorderBrush="#1FFFFFFF" BorderThickness="1"
+          PointerPressed="Shell_PointerPressed">
+    <Grid RowDefinitions="44,*">
+
+      <!-- ============ title bar ============ -->
+      <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" PointerPressed="TitleBar_PointerPressed">
+        <StackPanel Orientation="Horizontal" Spacing="9" Margin="14,0,0,0" VerticalAlignment="Center">
+          <Image Source="avares://SekiroMapToolkit/Assets/app.png" Width="20" Height="20" />
+          <TextBlock Text="SEKIRO" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource Accent}"
+                     VerticalAlignment="Center" />
+          <TextBlock Text="MAP TOOLKIT" FontSize="12" Foreground="{DynamicResource TextMuted}"
+                     VerticalAlignment="Center" />
+          <Border Background="#0E2230" BorderBrush="#1D3E52" BorderThickness="1" CornerRadius="4"
+                  Padding="6,1" Margin="6,0,0,0" VerticalAlignment="Center">
+            <TextBlock Text="LTS" FontSize="9" Foreground="{DynamicResource Accent}" />
+          </Border>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4" Margin="0,0,8,0"
+                    VerticalAlignment="Center">
+          <Button Classes="avatar" ToolTip.Tip="关于本工具" Click="AboutAvatar_Click">
+            <TextBlock Text="狼" FontSize="11" Foreground="{DynamicResource Accent}" />
+          </Button>
+          <Button Classes="chrome" Content="&#xE921;" Click="Minimize_Click" />
+          <Button Classes="chrome" x:Name="MaxBtn" Content="&#xE922;" Click="Maximize_Click" />
+          <Button Classes="chrome close" Content="&#xE8BB;" Click="Close_Click" />
+        </StackPanel>
+      </Grid>
+
+      <!-- ============ body ============ -->
+      <Grid Grid.Row="1" ColumnDefinitions="236,*">
+
+        <!-- sidebar -->
+        <Border Background="#D9060A10" BorderBrush="#13202E" BorderThickness="0,0,1,0">
+          <Grid RowDefinitions="Auto,*,Auto" Margin="0,10,0,12">
+
+            <StackPanel Margin="16,6,16,14" Spacing="2">
+              <TextBlock Text="只狼地图导出工具集" FontSize="13.5" FontWeight="SemiBold" />
+              <TextBlock Text="SEKIRO MAP · BLENDER PIPELINE" FontSize="9.5" Foreground="{DynamicResource TextMuted}" />
+            </StackPanel>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="10,0" Spacing="1">
+              <Button Classes="nav active" x:Name="NavHome" Tag="0" Click="Nav_Click">
+                <StackPanel Orientation="Horizontal" Spacing="11">
+                  <TextBlock Text="&#xE80F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                             VerticalAlignment="Center" />
+                  <TextBlock Text="主页" VerticalAlignment="Center" />
+                </StackPanel>
+              </Button>
+              <Button Classes="nav" x:Name="NavExport" Tag="1" Click="Nav_Click">
+                <StackPanel Orientation="Horizontal" Spacing="11">
+                  <TextBlock Text="&#xE896;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                             VerticalAlignment="Center" />
+                  <TextBlock Text="地图导出" VerticalAlignment="Center" />
+                </StackPanel>
+              </Button>
+              <Button Classes="nav" x:Name="NavUnpack" Tag="2" Click="Nav_Click">
+                <StackPanel Orientation="Horizontal" Spacing="11">
+                  <TextBlock Text="&#xE8B7;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                             VerticalAlignment="Center" />
+                  <TextBlock Text="解包与校验" VerticalAlignment="Center" />
+                </StackPanel>
+              </Button>
+              <Button Classes="nav" x:Name="NavTex" Tag="3" Click="Nav_Click">
+                <StackPanel Orientation="Horizontal" Spacing="11">
+                  <TextBlock Text="&#xE91B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                             VerticalAlignment="Center" />
+                  <TextBlock Text="贴图工具" VerticalAlignment="Center" />
+                </StackPanel>
+              </Button>
+              <Button Classes="nav" x:Name="NavPreview" Tag="4" Click="Nav_Click">
+                <StackPanel Orientation="Horizontal" Spacing="11">
+                  <TextBlock Text="&#xE81E;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                             VerticalAlignment="Center" />
+                  <TextBlock Text="场景预览" VerticalAlignment="Center" />
+                </StackPanel>
+              </Button>
+              <Button Classes="nav" x:Name="NavAudio" Tag="5" Click="Nav_Click">
+                <StackPanel Orientation="Horizontal" Spacing="11">
+                  <TextBlock Text="&#xE8D6;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                             VerticalAlignment="Center" />
+                  <TextBlock Text="音频导出" VerticalAlignment="Center" />
+                </StackPanel>
+              </Button>
+              <Button Classes="nav" x:Name="NavAnim" Tag="6" Click="Nav_Click">
+                <StackPanel Orientation="Horizontal" Spacing="11">
+                  <TextBlock Text="&#xE805;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                             VerticalAlignment="Center" />
+                  <TextBlock Text="角色动画" VerticalAlignment="Center" />
+                </StackPanel>
+              </Button>
+              <Button Classes="nav" x:Name="NavModel" Tag="7" Click="Nav_Click">
+                <StackPanel Orientation="Horizontal" Spacing="11">
+                  <TextBlock Text="&#xE7F8;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                             VerticalAlignment="Center" />
+                  <TextBlock Text="模型贴图" VerticalAlignment="Center" />
+                </StackPanel>
+              </Button>
+              <Button Classes="nav" x:Name="NavTools" Tag="8" Click="Nav_Click">
+                <StackPanel Orientation="Horizontal" Spacing="11">
+                  <TextBlock Text="&#xE90F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                             VerticalAlignment="Center" />
+                  <TextBlock Text="内置工具" VerticalAlignment="Center" />
+                </StackPanel>
+              </Button>
+              <Button Classes="nav" x:Name="NavAbout" Tag="9" Click="Nav_Click">
+                <StackPanel Orientation="Horizontal" Spacing="11">
+                  <TextBlock Text="&#xE946;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                             VerticalAlignment="Center" />
+                  <TextBlock Text="使用说明" VerticalAlignment="Center" />
+                </StackPanel>
+              </Button>
+            </StackPanel>
+            </ScrollViewer>
+
+            <StackPanel Grid.Row="2" Margin="16,0" Spacing="6">
+              <Separator Background="#12202C" Height="1" />
+              <StackPanel Orientation="Horizontal" Spacing="7">
+                <Ellipse Width="6" Height="6" Fill="{DynamicResource Glow}" VerticalAlignment="Center" />
+                <TextBlock x:Name="SideStatus" Text="就绪 · 单文件版" FontSize="10.5"
+                           Foreground="{DynamicResource TextMuted}" />
+              </StackPanel>
+              <TextBlock Text="v1.5.0" FontSize="10" Foreground="{DynamicResource TextMuted}" />
+            </StackPanel>
+          </Grid>
+        </Border>
+
+        <!-- main area -->
+        <Grid Grid.Column="1" RowDefinitions="62,*,Auto">
+
+          <Grid RowDefinitions="Auto" ColumnDefinitions="*,Auto" Margin="22,0,22,0" VerticalAlignment="Center">
+            <StackPanel Spacing="3">
+              <TextBlock x:Name="PageTitle" Text="主页" FontSize="17" FontWeight="SemiBold" />
+              <TextBlock x:Name="PageSub" Text="把只狼的 MSB 摆放与 FLVER 模型，原样搬进 Blender"
+                         FontSize="11.5" Foreground="{DynamicResource TextMuted}" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+              <Button Classes="ghost small" Content="换壁纸" Click="NextBackdrop_Click" ToolTip.Tip="在 12 张内置插画之间轮换" />
+              <Button Classes="ghost small" Content="自定义背景" Click="PickBackground_Click" />
+              <Button Classes="ghost small" Content="打开输出目录" Click="OpenOutput_Click" />
+              <Button Classes="primary small" Content="一键导出全部" Click="ExportAll_Click" />
+            </StackPanel>
+          </Grid>
+
+          <!-- 页面宿主：一整块背景图 + 自动压暗遮罩，7 个页面共用 -->
+          <Grid Grid.Row="1" x:Name="PageHost" Margin="0" ClipToBounds="True">
+
+            <Image x:Name="PageBg" Stretch="UniformToFill" RenderOptions.BitmapInterpolationMode="HighQuality" />
+            <Border x:Name="PageDim" Background="#C4070B12" />
+            <Border VerticalAlignment="Top" Height="70" IsHitTestVisible="False">
+              <Border.Background>
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
+                  <GradientStop Color="#B3050A10" Offset="0" />
+                  <GradientStop Color="#00050A10" Offset="1" />
+                </LinearGradientBrush>
+              </Border.Background>
+            </Border>
+
+            <!-- HOME -->
+            <Grid x:Name="PageHome">
+              <Grid RowDefinitions="Auto,*,Auto" Margin="34,24,34,26">
+                <StackPanel Spacing="9" MaxWidth="760">
+                  <TextBlock Text="SEKIRO · MAP PIPELINE" FontSize="10.5" Foreground="{DynamicResource Accent}" />
+                  <TextBlock Text="把只狼的地图，原封不动搬进 Blender" Classes="h1" />
+                  <TextBlock Classes="sub" MaxWidth="640"
+                             Text="解析 MSB 摆放数据、FLVER2 模型、MTD 材质、TPF 贴图，一次性合成为可直接打开的 .blend：位置、旋转、缩放与 DSMapStudio 里看到的一致，贴图全部打包。" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="10" VerticalAlignment="Bottom">
+                  <Border Classes="chip">
+                    <StackPanel Spacing="1">
+                      <TextBlock x:Name="HomeMapCount" Text="—" Classes="num" />
+                      <TextBlock Text="张地图" Classes="hint" />
+                    </StackPanel>
+                  </Border>
+                  <Border Classes="chip">
+                    <StackPanel Spacing="1">
+                      <TextBlock x:Name="HomeModelCount" Text="—" Classes="num" />
+                      <TextBlock Text="个地图块" Classes="hint" />
+                    </StackPanel>
+                  </Border>
+                  <Border Classes="chip">
+                    <StackPanel Spacing="1">
+                      <TextBlock x:Name="HomeTexCount" Text="—" Classes="num" />
+                      <TextBlock Text="个物件" Classes="hint" />
+                    </StackPanel>
+                  </Border>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="12"
+                            HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                  <Button Classes="primary" Width="222" Height="54" Click="StartFromHome_Click">
+                    <StackPanel Orientation="Horizontal" Spacing="11">
+                      <TextBlock Text="&#xE768;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="15"
+                                 VerticalAlignment="Center" />
+                      <TextBlock Text="开始使用" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" />
+                    </StackPanel>
+                  </Button>
+                  <Button Classes="round" Width="54" Height="54" Content="&#xE700;"
+                          FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                          Click="QuickMenu_Click" ToolTip.Tip="快捷菜单" />
+                </StackPanel>
+
+                <Border x:Name="QuickMenuPanel" IsVisible="False" Grid.Row="2"
+                        HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                        Margin="0,0,66,152" Width="212" Classes="card" Padding="8"
+                        BoxShadow="0 14 34 0 #88000000">
+                  <StackPanel Spacing="2">
+                    <Button Classes="nav" Content="导出全部地图" Click="ExportAll_Click" />
+                    <Button Classes="nav" Content="打开输出目录" Click="OpenOutput_Click" />
+                    <Button Classes="nav" Content="校验解包完整性" Click="Validate_Click" />
+                    <Button Classes="nav" Content="换一张壁纸" Click="NextBackdrop_Click" />
+                    <Button Classes="nav" Content="自定义背景图" Click="PickBackground_Click" />
+                    <Button Classes="nav" Content="查看使用说明" Click="NavAbout_Click" />
+                  </StackPanel>
+                </Border>
+              </Grid>
+            </Grid>
+
+            <!-- EXPORT -->
+            <Grid x:Name="PageExport" IsVisible="False" Margin="22,0,22,0"
+                  ColumnDefinitions="*,340">
+
+              <Border Classes="card" Padding="0" Grid.Column="0">
+                <Grid RowDefinitions="Auto,*">
+                  <Grid Margin="16,12,16,8" ColumnDefinitions="*,Auto">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                      <TextBlock Text="地图列表" Classes="section" />
+                      <TextBlock x:Name="MapCountText" Text="" Classes="hint" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                      <Button Classes="ghost small" Content="全选" Click="SelectAll_Click" />
+                      <Button Classes="ghost small" Content="反选" Click="Invert_Click" />
+                      <Button Classes="ghost small" Content="刷新" Click="RefreshMaps_Click" />
+                    </StackPanel>
+                  </Grid>
+                  <ScrollViewer Grid.Row="1" Margin="6,0,6,10">
+                    <StackPanel x:Name="MapList" Spacing="1" />
+                  </ScrollViewer>
+                </Grid>
+              </Border>
+
+              <Grid Grid.Column="1" RowDefinitions="Auto,Auto,*,Auto">
+
+                <Border Classes="card" Padding="16,14">
+                  <StackPanel Spacing="9">
+                    <TextBlock Text="路径" Classes="section" />
+                    <StackPanel Spacing="3">
+                      <TextBlock Text="解包目录（含 map / obj / mtd）" Classes="hint" />
+                      <Grid ColumnDefinitions="*,Auto">
+                        <TextBox x:Name="RootBox" FontSize="11" />
+                        <Button Grid.Column="1" Classes="ghost small" Content="…" Click="BrowseRoot_Click" />
+                      </Grid>
+                    </StackPanel>
+                    <StackPanel Spacing="3">
+                      <TextBlock Text="输出目录" Classes="hint" />
+                      <Grid ColumnDefinitions="*,Auto">
+                        <TextBox x:Name="OutBox" FontSize="11" />
+                        <Button Grid.Column="1" Classes="ghost small" Content="…" Click="BrowseOut_Click" />
+                      </Grid>
+                    </StackPanel>
+                    <StackPanel Spacing="3">
+                      <TextBlock Text="Blender 可执行文件" Classes="hint" />
+                      <Grid ColumnDefinitions="*,Auto">
+                        <TextBox x:Name="BlenderBox" FontSize="11" />
+                        <Button Grid.Column="1" Classes="ghost small" Content="…" Click="BrowseBlender_Click" />
+                      </Grid>
+                    </StackPanel>
+                  </StackPanel>
+                </Border>
+
+                <Border Grid.Row="1" Classes="card" Padding="16,14">
+                  <StackPanel Spacing="7">
+                    <TextBlock Text="导出设置" Classes="section" />
+                    <Grid ColumnDefinitions="*,Auto" Margin="0,2,0,0">
+                      <TextBlock Text="限制模型数（0 = 全部）" Classes="hint" VerticalAlignment="Center" />
+                      <NumericUpDown Grid.Column="1" x:Name="LimitBox" Minimum="0" Maximum="99999"
+                                     Increment="1" Width="128" Value="0" />
+                    </Grid>
+                    <CheckBox x:Name="SkipFogBox" IsChecked="True" Content="跳过云雾 / 天空壳体" />
+                    <CheckBox x:Name="BuildBlendBox" IsChecked="True" Content="导出后自动生成 .blend" />
+                    <CheckBox x:Name="OpenDoneBox" Content="完成后打开输出目录" />
+                  </StackPanel>
+                </Border>
+
+                <Border Grid.Row="2" Classes="card" Padding="16,14" VerticalAlignment="Top">
+                  <StackPanel Spacing="8">
+                    <TextBlock Text="执行" Classes="section" />
+                    <Grid ColumnDefinitions="*,*">
+                      <Button x:Name="RunBtn" Classes="primary" Content="开始导出" Height="38"
+                              Click="RunExport_Click" />
+                      <Button Grid.Column="1" x:Name="CancelBtn" Classes="ghost" Content="取消" Height="38"
+                              IsEnabled="False" Click="CancelExport_Click" />
+                    </Grid>
+                    <ProgressBar x:Name="Bar" Minimum="0" Maximum="1" Value="0" />
+                    <TextBlock x:Name="StatusText" Text="待命" Classes="hint" />
+                  </StackPanel>
+                </Border>
+              </Grid>
+            </Grid>
+
+            <!-- UNPACK -->
+            <Grid x:Name="PageUnpack" IsVisible="False" Margin="22,0,22,0"
+                  ColumnDefinitions="*,*">
+
+              <Border Classes="card">
+                <Grid RowDefinitions="Auto,Auto,*">
+                  <TextBlock Text="解包（只狼）" Classes="h2" />
+                  <StackPanel Grid.Row="1" Spacing="8" Margin="0,10,0,10">
+                    <Button x:Name="BtnNuxe" Classes="ghost" Content="启动 Nuxe 1.3.0" Click="LaunchNuxe_Click" />
+                    <Button x:Name="BtnUxm" Classes="ghost" Content="启动 UXM" Click="LaunchUxm_Click" />
+                    <Button Classes="ghost" Content="打开游戏根目录" Click="OpenGameRoot_Click" />
+                    <Button Classes="ghost" Content="打开解包目录" Click="OpenUnpacked_Click" />
+                  </StackPanel>
+                  <ScrollViewer Grid.Row="2">
+                    <TextBlock Classes="hint" TextWrapping="Wrap"
+                               Text="1. 打开 Nuxe（推荐）或 UXM，Browse 指向 sekiro.exe。&#x0a;2. 点 Unpack；想省空间就只勾 map / obj / mtd。&#x0a;3. 解包结果落在 &lt;游戏根&gt;\文件\，本工具默认指向这里。&#x0a;4. 点右侧“开始校验”，8 项全绿即可开导。&#x0a;&#x0a;导出真正用到：&#x0a;· 文件\map\mapstudio\m*.msb.dcx&#x0a;· 文件\map\m*\m*_*.mapbnd.dcx&#x0a;· 文件\obj\*.objbnd.dcx&#x0a;· 文件\mtd\*.mtd" />
+                  </ScrollViewer>
+                </Grid>
+              </Border>
+
+              <Border Grid.Column="1" Classes="card">
+                <Grid RowDefinitions="Auto,Auto,*">
+                  <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Text="完整性校验" Classes="h2" />
+                    <Button Grid.Column="1" Classes="primary small" Content="开始校验" Click="Validate_Click" />
+                  </Grid>
+                  <TextBlock Grid.Row="1" x:Name="CheckSummary" Text="尚未校验" Classes="hint" Margin="0,6,0,8" />
+                  <ScrollViewer Grid.Row="2">
+                    <StackPanel x:Name="CheckList" Spacing="6" />
+                  </ScrollViewer>
+                </Grid>
+              </Border>
+            </Grid>
+
+            <!-- TEXTURES -->
+            <Grid x:Name="PageTex" IsVisible="False" Margin="22,0,22,0"
+                  ColumnDefinitions="*,320">
+              <Border Classes="card">
+                <Grid RowDefinitions="Auto,Auto,Auto,*">
+                  <TextBlock Text="DDS → PNG 批量转换" Classes="h2" />
+                  <TextBlock Grid.Row="1" Margin="0,6,0,10" Classes="hint"
+                             Text="把 tex 目录里的 DDS 转成不透明 RGB PNG：丢弃 alpha，透明像素用邻域颜色扩散填充，避免树叶 / 纸片变黑。" />
+                  <Grid Grid.Row="2" ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,10">
+                    <TextBox x:Name="TexDirBox" FontSize="11" Watermark="选择包含 .dds 的目录" />
+                    <Button Grid.Column="1" Classes="ghost small" Content="浏览…" Click="BrowseTex_Click" />
+                    <Button Grid.Column="2" Classes="primary small" Content="开始转换" Click="ConvertTex_Click" />
+                  </Grid>
+                  <ProgressBar Grid.Row="3" x:Name="TexBar" Minimum="0" Maximum="1" IsIndeterminate="True"
+                               IsVisible="False" VerticalAlignment="Top" />
+                </Grid>
+              </Border>
+              <Border Grid.Column="1" Classes="card">
+                <StackPanel Spacing="8">
+                  <TextBlock Text="说明" Classes="section" />
+                  <TextBlock Classes="hint" TextWrapping="Wrap"
+                             Text="· 转换依赖 Blender 的图像解码器（DDS 支持完整）。&#x0a;· 默认保留 DDS；勾选下方可在转换后删除源文件。&#x0a;· 建模流程（build_blend.py）会自动做同样的转换，此页只是单独补图用。" />
+                  <CheckBox x:Name="DeleteDdsBox" Content="转换后删除 DDS 源文件" />
+                </StackPanel>
+              </Border>
+            </Grid>
+
+            <!-- PREVIEW -->
+            <Grid x:Name="PagePreview" IsVisible="False" Margin="22,0,22,0"
+                  ColumnDefinitions="340,*">
+              <Border Classes="card">
+                <StackPanel Spacing="10">
+                  <TextBlock Text="场景预览" Classes="h2" />
+                  <TextBlock Text="选择已导出的地图数据目录" Classes="hint" />
+                  <ComboBox x:Name="PreviewCombo" HorizontalAlignment="Stretch" />
+                  <Grid ColumnDefinitions="*,*">
+                    <Button Classes="ghost small" Content="载入统计" Click="PreviewLoad_Click" />
+                    <Button Grid.Column="1" Classes="ghost small" Content="渲染缩略图" Click="PreviewRender_Click" />
+                  </Grid>
+                  <Button Classes="ghost small" Content="把这张渲染图设为背景" Click="UseRenderAsBackdrop_Click" />
+                  <Separator Background="#12202C" />
+                  <TextBlock x:Name="PreviewStats" Classes="hint" Text="尚未载入" MinHeight="120" />
+                </StackPanel>
+              </Border>
+              <Border Grid.Column="1" Classes="card" Padding="10">
+                <Grid RowDefinitions="*,Auto">
+                  <Border CornerRadius="8" ClipToBounds="True" Background="#050A10">
+                    <Image x:Name="PreviewImage" Stretch="Uniform" />
+                  </Border>
+                  <TextBlock Grid.Row="1" x:Name="PreviewHint" Classes="hint" Margin="4,8,4,0"
+                             Text="缩略图由 Blender 渲染，约 20–40 秒。" />
+                </Grid>
+              </Border>
+            </Grid>
+
+            <!-- AUDIO -->
+            <Grid x:Name="PageAudio" IsVisible="False" Margin="22,0,22,0"
+                  ColumnDefinitions="*,352">
+
+              <Border Classes="card" Padding="0">
+                <Grid RowDefinitions="Auto,Auto,Auto,*">
+                  <Grid Margin="16,12,16,6" ColumnDefinitions="*,Auto">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                      <TextBlock Text="音频清单" Classes="section" />
+                      <TextBlock x:Name="AudioCountText" Text="" Classes="hint" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                      <Button Classes="ghost small" Content="刷新" Click="AudioRefresh_Click" />
+                      <Button Classes="ghost small" Content="全选" Click="AudioSelectAll_Click" />
+                      <Button Classes="ghost small" Content="反选" Click="AudioInvert_Click" />
+                    </StackPanel>
+                  </Grid>
+
+                  <!-- 模式 + 搜索 -->
+                  <Grid Grid.Row="1" Margin="16,2,16,8" ColumnDefinitions="Auto,*,Auto">
+                    <Border Classes="tabgroup" VerticalAlignment="Center">
+                      <StackPanel Orientation="Horizontal" Spacing="2">
+                        <Button x:Name="AudioModeEventBtn" Classes="tab active" Content="按事件"
+                                Click="AudioModeEvent_Click" />
+                        <Button x:Name="AudioModeBankBtn" Classes="tab" Content="按音库"
+                                Click="AudioModeBank_Click" />
+                      </StackPanel>
+                    </Border>
+                    <Grid Grid.Column="1" Margin="10,0,10,0" ColumnDefinitions="*,Auto">
+                      <TextBox x:Name="AudioSearchBox" FontSize="11" Watermark="搜索事件名 / 路径，如 blood、m100000001"
+                               TextChanged="AudioSearch_Changed" />
+                      <Button Grid.Column="1" Classes="ghost small" Content="✕" Click="AudioSearchClear_Click" />
+                    </Grid>
+                    <Button Grid.Column="2" Classes="ghost small" Content="探测子音轨" Click="AudioProbe_Click" />
+                  </Grid>
+
+                  <TextBlock Grid.Row="2" x:Name="AudioHint" Classes="hint" TextWrapping="Wrap"
+                             Margin="16,0,16,8"
+                             Text="按事件浏览：一个事件 = 一条可单独导出的音频。" />
+
+                  <ScrollViewer Grid.Row="3" Margin="6,0,6,10">
+                    <StackPanel x:Name="AudioList" Spacing="1" />
+                  </ScrollViewer>
+                </Grid>
+              </Border>
+
+              <StackPanel Grid.Column="1" Spacing="12">
+
+                <Border Classes="card" Padding="16,14">
+                  <StackPanel Spacing="9">
+                    <TextBlock Text="路径" Classes="section" />
+                    <StackPanel Spacing="3">
+                      <TextBlock Text="音库目录（含 *.fsb）" Classes="hint" />
+                      <Grid ColumnDefinitions="*,Auto">
+                        <TextBox x:Name="AudioSrcBox" FontSize="11" />
+                        <Button Grid.Column="1" Classes="ghost small" Content="…" Click="BrowseAudioSrc_Click" />
+                      </Grid>
+                    </StackPanel>
+                    <StackPanel Spacing="3">
+                      <TextBlock Text="输出目录" Classes="hint" />
+                      <Grid ColumnDefinitions="*,Auto">
+                        <TextBox x:Name="AudioOutBox" FontSize="11" />
+                        <Button Grid.Column="1" Classes="ghost small" Content="…" Click="BrowseAudioOut_Click" />
+                      </Grid>
+                    </StackPanel>
+                  </StackPanel>
+                </Border>
+
+                <Border Classes="card" Padding="16,14">
+                  <StackPanel Spacing="7">
+                    <TextBlock Text="导出设置" Classes="section" />
+                    <Grid ColumnDefinitions="*,Auto">
+                      <TextBlock Text="MP3 码率（kbps）" Classes="hint" VerticalAlignment="Center" />
+                      <NumericUpDown Grid.Column="1" x:Name="AudioBitrateBox" Minimum="64" Maximum="320"
+                                     Increment="32" Width="128" Value="192" />
+                    </Grid>
+                    <CheckBox x:Name="AudioSkipTinyBox" IsChecked="True" Content="跳过 &lt;0.1 秒的占位音" />
+                    <CheckBox x:Name="AudioKeepWavBox" Content="同时保留无损 WAV" />
+                    <Grid ColumnDefinitions="*,*">
+                      <Button x:Name="AudioRunBtn" Classes="primary" Content="开始导出" Height="38"
+                              Click="AudioRun_Click" />
+                      <Button Grid.Column="1" x:Name="AudioCancelBtn" Classes="ghost" Content="取消" Height="38"
+                              IsEnabled="False" Click="AudioCancel_Click" />
+                    </Grid>
+                    <ProgressBar x:Name="AudioBar" Minimum="0" Maximum="1" Value="0" />
+                    <TextBlock x:Name="AudioStatus" Text="待命" Classes="hint" />
+                  </StackPanel>
+                </Border>
+
+                <Border Classes="card" Padding="16,14">
+                  <StackPanel Spacing="7">
+                    <TextBlock Text="说明" Classes="section" />
+                    <TextBlock Classes="hint" TextWrapping="Wrap"
+                               Text="· 按事件：从 sound\*.fev 的事件表里读，一个事件 = 一条可单独导出的音频，勾哪个导哪个，不用整库解。&#x0a;· 按音库：整个 .fsb 全拆，适合一次全导。&#x0a;· 输出：地图\类别\音库\事件名.mp3。&#x0a;· 解码用内置 vgmstream（只狼加密音库也能读），MP3 用 Windows 自带编码器，不需要 ffmpeg。" />
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+            </Grid>
+
+            <!-- ANIMATION -->
+            <Grid x:Name="PageAnim" IsVisible="False" Margin="22,0,22,0"
+                  ColumnDefinitions="142,230,1.3*,1.3*,0.95*,205">
+
+              <Border Classes="card" Padding="0">
+                <Grid RowDefinitions="Auto,Auto,*">
+                  <Grid Margin="16,12,16,8" ColumnDefinitions="*,Auto">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                      <TextBlock Text="角色" Classes="section" />
+                      <TextBlock x:Name="AnimChrCount" Text="" Classes="hint" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <Button Grid.Column="1" Classes="ghost small" Content="刷新" Click="AnimRefresh_Click" />
+                  </Grid>
+                  <TextBlock Grid.Row="1" Classes="hint" TextWrapping="Wrap" Margin="16,0,16,8"
+                             Text="读 chr\*.anibnd.dcx 的 TAE 动画表，A 档角色是狼。" />
+                  <ScrollViewer Grid.Row="2" Margin="6,0,6,10">
+                    <StackPanel x:Name="AnimChrList" Spacing="1" />
+                  </ScrollViewer>
+                </Grid>
+              </Border>
+
+              <Border Grid.Column="1" Classes="card" Padding="0" Margin="10,0,10,0">
+                <Grid RowDefinitions="Auto,Auto,*">
+                  <Grid Margin="14,12,14,6" ColumnDefinitions="*,Auto">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                      <TextBlock Text="动画" Classes="section" />
+                      <TextBlock x:Name="AnimCount" Text="" Classes="hint" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                      <Button Classes="ghost small" Content="全选" Click="AnimSelectAll_Click" />
+                      <Button Classes="ghost small" Content="清空" Click="AnimClear_Click" />
+                    </StackPanel>
+                  </Grid>
+                  <Grid Grid.Row="1" Margin="14,2,14,8" ColumnDefinitions="*,Auto">
+                    <TextBox x:Name="AnimSearchBox" FontSize="11"
+                             Watermark="搜索动画名 / ID，如 a000_0050、5400"
+                             TextChanged="AnimSearch_Changed" />
+                    <Button Grid.Column="1" Classes="ghost small" Content="✕" Click="AnimSearchClear_Click" />
+                  </Grid>
+                  <ScrollViewer Grid.Row="2" Margin="6,0,6,10">
+                    <StackPanel x:Name="AnimList" Spacing="1" />
+                  </ScrollViewer>
+                </Grid>
+              </Border>
+
+              <!-- 图形编辑器：事件时间轴，DSAnimStudio 同款 -->
+              <Border Grid.Column="2" Classes="card" Padding="0" Margin="0,0,10,0">
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto">
+                  <Grid Margin="14,12,14,4" ColumnDefinitions="*,Auto,Auto">
+                    <TextBlock Text="图形编辑器" Classes="section" VerticalAlignment="Center" />
+                    <Button Grid.Column="1" x:Name="GraphAllBtn" Classes="ghost small" Content="全轨" Margin="0,0,4,0" />
+                    <Button Grid.Column="2" x:Name="GraphSoundBtn" Classes="ghost small" Content="只看音频" />
+                  </Grid>
+                  <TextBlock Grid.Row="1" x:Name="GraphInfo" Text="" Classes="hint" FontSize="10.5"
+                             Margin="14,0,14,2" TextTrimming="CharacterEllipsis" />
+
+                  <!-- 时间刻度 + 播放头 -->
+                  <Grid Grid.Row="2" Margin="14,0,14,4" ColumnDefinitions="120,*">
+                    <TextBlock Grid.Column="1" x:Name="GraphTime" Text="0.000 / 0.000 秒" Classes="hint" FontSize="10" />
+                  </Grid>
+
+                  <Slider Grid.Row="3" x:Name="GraphTimeSlider" Margin="14,0,14,6"
+                          Minimum="0" Maximum="1" Value="0" />
+
+                  <ScrollViewer Grid.Row="4" Margin="6,0,6,6">
+                    <StackPanel x:Name="GraphTracks" Spacing="2" />
+                  </ScrollViewer>
+
+                  <TextBlock Grid.Row="5" x:Name="GraphHint" Classes="hint" FontSize="10"
+                             TextWrapping="Wrap" Margin="14,0,14,10"
+                             Text="点一条事件看它的参数。滑块拖时间轴，事件按开始时间排布。" />
+                </Grid>
+              </Border>
+
+              <!-- 视口：3D 模型 + 骨架 -->
+              <Border Grid.Column="3" Classes="card" Padding="0" Margin="0,0,10,0">
+                <Grid RowDefinitions="Auto,Auto,*,Auto">
+                  <Grid Margin="14,12,14,4" ColumnDefinitions="*,Auto">
+                    <TextBlock Text="视口" Classes="section" VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1" x:Name="ViewportInfo" Text="" Classes="hint" VerticalAlignment="Center" />
+                  </Grid>
+                  <TextBlock Grid.Row="1" x:Name="ViewportAnim" Classes="hint" FontSize="10.5"
+                             Margin="14,0,14,4" TextTrimming="CharacterEllipsis"
+                             Text="点左边一条动画，这里显示模型当前姿势。" />
+                  <Border Grid.Row="2" Margin="8,0,8,4" Background="#070D14" CornerRadius="6"
+                          ClipToBounds="True">
+                    <Grid>
+                      <Image x:Name="ViewportImage" Stretch="Uniform" RenderOptions.BitmapInterpolationMode="HighQuality" />
+                      <TextBlock x:Name="ViewportFps" Text="" FontSize="10"
+                                 Margin="8,6,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                 Foreground="#7FE0A0" />
+                    </Grid>
+                  </Border>
+                  <Grid Grid.Row="3" Margin="10,2,10,10" ColumnDefinitions="Auto,Auto,Auto,*,Auto">
+                    <Button x:Name="ViewportPlayBtn" Classes="ghost small" Content="播放" Margin="0,0,4,0" />
+                    <Button Grid.Column="1" x:Name="ViewportLoopBtn" Classes="ghost small" Content="循环" Margin="0,0,4,0" />
+                    <Button Grid.Column="2" x:Name="ViewportShadeBtn" Classes="ghost small" Content="着色" Margin="0,0,6,0" />
+                    <Slider Grid.Column="3" x:Name="ViewportFrame" Minimum="0" Maximum="1" Value="0"
+                            VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="4" x:Name="ViewportTime" Text="0 / 0" Classes="hint"
+                               FontSize="10.5" VerticalAlignment="Center" Margin="6,0,0,0" />
+                  </Grid>
+                </Grid>
+              </Border>
+
+              <!-- 参数 / 实体 / 日志 -->
+              <Border Grid.Column="4" Classes="card" Padding="0" Margin="0,0,10,0">
+                <Grid RowDefinitions="Auto,Auto,*">
+                  <Grid Margin="10,10,10,4" ColumnDefinitions="Auto,Auto,Auto,*,Auto">
+                    <Button x:Name="TabParamBtn" Classes="ghost small" Content="参数" Margin="0,0,4,0" />
+                    <Button Grid.Column="1" x:Name="TabEntityBtn" Classes="ghost small" Content="实体" Margin="0,0,4,0" />
+                    <Button Grid.Column="2" x:Name="TabLogBtn" Classes="ghost small" Content="日志" Margin="0,0,4,0" />
+                    <TextBlock Grid.Column="4" x:Name="ParamCount" Text="" Classes="hint" VerticalAlignment="Center" />
+                  </Grid>
+                  <TextBlock Grid.Row="1" x:Name="ParamTitle" Text="" Classes="hint" FontSize="10.5"
+                             Margin="12,0,12,4" TextTrimming="CharacterEllipsis" />
+                  <Grid Grid.Row="2">
+                    <ScrollViewer x:Name="ParamScroll" Margin="6,0,6,10">
+                      <StackPanel x:Name="ParamList" Spacing="2" />
+                    </ScrollViewer>
+                    <ScrollViewer x:Name="EntityScroll" Margin="6,0,6,10" IsVisible="False">
+                      <StackPanel x:Name="EntityList" Spacing="2" />
+                    </ScrollViewer>
+                    <ScrollViewer x:Name="VpLogScroll" Margin="6,0,6,10" IsVisible="False">
+                      <TextBlock x:Name="VpLogText" Text="" FontSize="10.5"
+                                 TextWrapping="Wrap" LineHeight="17" Foreground="#8FA3B8" />
+                    </ScrollViewer>
+                  </Grid>
+                </Grid>
+              </Border>
+
+              <StackPanel Grid.Column="5" Spacing="12">
+                <Border Classes="card" Padding="16,14">
+                  <StackPanel Spacing="9">
+                    <TextBlock Text="导出" Classes="section" />
+                    <StackPanel Spacing="3">
+                      <TextBlock Text="输出目录" Classes="hint" />
+                      <Grid ColumnDefinitions="*,Auto">
+                        <TextBox x:Name="AnimOutBox" FontSize="11" />
+                        <Button Grid.Column="1" Classes="ghost small" Content="…" Click="BrowseAnimOut_Click" />
+                      </Grid>
+                    </StackPanel>
+                    <CheckBox x:Name="AnimWholeBox" Content="导出整个角色（不按勾选筛）" />
+                    <TextBlock Text="连带导出" Classes="hint" Margin="0,4,0,0" />
+                    <CheckBox x:Name="AnimFbxBox" Content="FBX（动画 + 骨骼，Blender 直接开）" IsChecked="True" />
+                    <CheckBox x:Name="AnimMeshBox" Content="模型网格（蒙皮权重一起带）" IsChecked="True" />
+                    <CheckBox x:Name="AnimTexBox" Content="贴图（材质引用的 DDS）" IsChecked="True" />
+                    <CheckBox x:Name="AnimAudioBox" Content="音频（该角色的音库配音）" IsChecked="False" />
+                    <CheckBox x:Name="AnimRestBox" Content="只要静置姿势（不出动画曲线）" IsChecked="False" />
+                    <Button x:Name="AnimRunBtn" Classes="primary" Content="导出" Height="38"
+                            Click="AnimRun_Click" />
+                    <ProgressBar x:Name="AnimBar" Minimum="0" Maximum="1" Value="0" />
+                    <TextBlock x:Name="AnimStatus" Text="待命" Classes="hint" TextWrapping="Wrap" />
+                  </StackPanel>
+                </Border>
+
+                <Border Classes="card" Padding="16,14">
+                  <StackPanel Spacing="7">
+                    <TextBlock Text="说明" Classes="section" />
+                    <TextBlock Classes="hint" TextWrapping="Wrap"
+                               Text="· 勾 FBX 就直接出 .fbx，动画曲线 + 骨骼 + 模型蒙皮都在里面，Blender / Maya / Unity 都能开。&#x0a;· 模型从 chrbnd 的 flver 读，贴图按材质的 MTD 解析出真实文件名再去贴图池里取。&#x0a;· 音频按角色音库（sound\c1010.fev / .fsb）整包带出，是这个角色的配音集合。&#x0a;· 只要原始 .hkx（给 DSAnimStudio 用）就不勾 FBX。" />
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+            </Grid>
+
+            <!-- MODEL / TEXTURE -->
+            <Grid x:Name="PageModel" IsVisible="False" Margin="22,0,22,0"
+                  ColumnDefinitions="300,*,330">
+              <Border Classes="card" Padding="0">
+                <Grid RowDefinitions="Auto,*">
+                  <Grid Margin="14,12,14,8" ColumnDefinitions="*,Auto">
+                    <StackPanel Spacing="1">
+                      <TextBlock Text="角色" Classes="section" />
+                      <TextBlock x:Name="ModelChrCount" Text="" Classes="hint" />
+                    </StackPanel>
+                    <Button Grid.Column="1" Classes="ghost small" Content="刷新" Click="ModelRefresh_Click" />
+                  </Grid>
+                  <ScrollViewer Grid.Row="1" Margin="8,0,8,10">
+                    <StackPanel x:Name="ModelChrList" Spacing="1" />
+                  </ScrollViewer>
+                </Grid>
+              </Border>
+
+              <Border Grid.Column="1" Classes="card" Padding="0">
+                <Grid RowDefinitions="Auto,*">
+                  <Grid Margin="16,12,16,8" ColumnDefinitions="*,Auto">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                      <TextBlock Text="模型与贴图" Classes="section" />
+                      <TextBlock x:Name="ModelInfo" Text="" Classes="hint" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                      <Button Classes="ghost small" Content="导出模型 FBX" Click="ModelExportFbx_Click" />
+                      <Button Classes="ghost small" Content="导出贴图" Click="ModelExportTex_Click" />
+                    </StackPanel>
+                  </Grid>
+                  <ScrollViewer Grid.Row="1" Margin="10,0,10,10">
+                    <StackPanel x:Name="ModelList" Spacing="2" />
+                  </ScrollViewer>
+                </Grid>
+              </Border>
+
+              <StackPanel Grid.Column="2" Spacing="12">
+                <Border Classes="card" Padding="16,14">
+                  <StackPanel Spacing="8">
+                    <TextBlock Text="概况" Classes="section" />
+                    <TextBlock x:Name="ModelSummary" Text="先选一个角色" Classes="hint" TextWrapping="Wrap" />
+                    <ProgressBar x:Name="ModelBar" Minimum="0" Maximum="1" Value="0" />
+                    <TextBlock x:Name="ModelStatus" Text="待命" Classes="hint" TextWrapping="Wrap" />
+                  </StackPanel>
+                </Border>
+                <Border Classes="card" Padding="16,14">
+                  <StackPanel Spacing="7">
+                    <TextBlock Text="说明" Classes="section" />
+                    <TextBlock Classes="hint" TextWrapping="Wrap"
+                               Text="· 模型从 &lt;角色&gt;.chrbnd.dcx 里的 .flver 读，一个角色通常拆成几十个网格。&#x0a;· 贴图名要从材质的 MTD 里查 —— FLVER 只存参数名，真实文件名在 mtd 文件里。&#x0a;· 导出模型 FBX 会连蒙皮权重一起写进去，Blender 打开就能给骨骼做姿势。&#x0a;· 这里的贴图是材质实际引用的那批，不含用不到的。" />
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+            </Grid>
+
+            <!-- BUILT-IN TOOLS -->
+            <Grid x:Name="PageTools" IsVisible="False" Margin="22,0,22,0"
+                  ColumnDefinitions="*,330">
+              <Border Classes="card" Padding="0">
+                <Grid RowDefinitions="Auto,*">
+                  <Grid Margin="16,12,16,8" ColumnDefinitions="*,Auto">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                      <TextBlock Text="内置工具" Classes="section" />
+                      <TextBlock x:Name="ToolCountText" Text="" Classes="hint" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                      <Button Classes="ghost small" Content="全部下载" Click="InstallAll_Click" />
+                      <Button Classes="ghost small" Content="打开工具目录" Click="OpenToolsDir_Click" />
+                    </StackPanel>
+                  </Grid>
+                  <ScrollViewer Grid.Row="1" Margin="8,0,8,10">
+                    <StackPanel x:Name="ToolList" Spacing="4" />
+                  </ScrollViewer>
+                </Grid>
+              </Border>
+
+              <StackPanel Grid.Column="1" Spacing="12">
+                <Border Classes="card">
+                  <StackPanel Spacing="8">
+                    <TextBlock Text="GitHub 访问令牌" Classes="section" />
+                    <TextBlock Classes="hint" TextWrapping="Wrap"
+                               Text="内置工具全部从 GitHub Release 直连下载。填了 PAT 可以走你的私有仓库、也能避开匿名限速；留空就用匿名下载。" />
+                    <TextBox x:Name="TokenBox" FontSize="11" PasswordChar="•" Watermark="github_pat_…" />
+                    <Grid ColumnDefinitions="*,Auto">
+                      <TextBlock x:Name="TokenState" Text="" Classes="hint" VerticalAlignment="Center" />
+                      <Button Grid.Column="1" Classes="ghost small" Content="保存" Click="SaveToken_Click" />
+                    </Grid>
+                  </StackPanel>
+                </Border>
+                <Border Classes="card">
+                  <StackPanel Spacing="8">
+                    <TextBlock Text="说明" Classes="section" />
+                    <TextBlock Classes="hint" TextWrapping="Wrap"
+                               Text="· 工具下载到 exe 同级的 tools\ 目录，不污染系统。&#x0a;· zip 用内置解压，7z 交给系统 tar.exe。&#x0a;· 装好后“启动”按钮变亮，路径写进 config.json。&#x0a;· 只有 Blender 需要你自行安装（体积太大，不放包里）。" />
+                    <Button Classes="ghost small" Content="打开 Blender 官网" Click="OpenBlenderSite_Click" />
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+            </Grid>
+
+            <!-- ABOUT -->
+            <Grid x:Name="PageAbout" IsVisible="False" Margin="22,0,22,0">
+              <Border Classes="card">
+                <ScrollViewer>
+                  <StackPanel Spacing="10" MaxWidth="980" HorizontalAlignment="Left">
+                    <TextBlock Text="使用说明" Classes="h2" />
+                    <TextBlock Classes="sub" Text="解包 → 解析 MSB/FLVER → 建 Blender 场景，一条流水线全在这一个 exe 里。" />
+                    <TextBlock Classes="section" Text="三步" />
+                    <TextBlock Classes="hint" TextWrapping="Wrap" Text="1) 解包：内置「解包与校验」页下载 Nuxe / UXM → 得到 文件\ 目录。&#x0a;2) 导出：本工具解析 msb + mapbnd + objbnd + mtd，写出 meshes.bin / scene.json / tex。&#x0a;3) 合成：调 Blender 跑 scripts\build_blend.py 生成 &lt;地图&gt;.blend（贴图已打包）。" />
+                    <TextBlock Classes="section" Text="坐标约定" />
+                    <TextBlock Classes="hint" TextWrapping="Wrap" Text="MSB (x右 / y前 / z上) → Blender (x右 / y进屏 / z上)，导出时做 (x, z, -y)；四元数按 (w,x,y,z) 写入。别再改轴向，否则物件会镜像或挤成一坨。" />
+                    <TextBlock Classes="section" Text="背景" />
+                    <TextBlock Classes="hint" TextWrapping="Wrap" Text="内置 20 张手绘只狼插画（1920×1080，已压暗保证文字按钮可读）：启动随机换一张，挂机每 4 分钟自动轮换；顶部「换壁纸」手动下一张，「自定义背景」换成自己的图，「场景预览」里还能把导出的地图渲染图设为背景。" />
+                    <TextBlock Classes="section" Text="音频导出" />
+                    <TextBlock Classes="hint" TextWrapping="Wrap" Text="扫 &lt;解包目录&gt;\sound\*.fsb，按地图归组、按前缀分 7 类（环境 m / 场景 sm / 混响 rm / 特殊 xm / 语音 vm / 角色 c / 全局 main）。解码交给内置 vgmstream（首次自动下载），转码走 Windows 自带 Media Foundation，不需要 ffmpeg。&#x0a;输出：&lt;输出目录&gt;\音频\&lt;地图&gt;\&lt;类别&gt;\&lt;音库&gt;\序号_音轨名.mp3&#x0a;只狼那些头部被混淆过的 FSB5（sm* / rm* / vm*_语言 / xm* / smain）vgmstream 直接能读，不用另找密钥。" />
+                    <TextBlock Classes="section" Text="命令行" />
+                    <TextBlock Classes="hint" FontFamily="Consolas, Microsoft YaHei UI" TextWrapping="Wrap" Text="SekiroMapToolkit.exe --cli --root &quot;&lt;解包目录&gt;&quot; --out &quot;&lt;输出目录&gt;&quot; --maps m10_00_00_00,m15_00_00_00 --blend&#x0a;SekiroMapToolkit.exe --cli --audio --all&#x0a;SekiroMapToolkit.exe --cli --audio --maps m10,m11 --cats 环境,场景&#x0a;SekiroMapToolkit.exe --cli --tools --list" />
+                    <TextBlock Classes="section" Text="限制" />
+                    <TextBlock Classes="hint" TextWrapping="Wrap" Text="只导模型 / 贴图 / 摆放；光源、碰撞、导航、事件不导。材质用 Principled 近似（albedo + normal + 固定粗糙度）。&#x0a;音频只导声音，不解析 .fev / .itl，拿不到事件触发关系。" />
+                  </StackPanel>
+                </ScrollViewer>
+              </Border>
+            </Grid>
+          </Grid>
+
+          <!-- log -->
+          <Border Grid.Row="2" Classes="card" Margin="22,10,22,14" Padding="12,10" Height="158">
+            <Grid RowDefinitions="Auto,*">
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
+                  <TextBlock Text="运行日志" Classes="section" />
+                  <TextBlock x:Name="LogCount" Text="" Classes="hint" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                  <Button Classes="ghost small" Content="清空" Click="ClearLog_Click" />
+                  <Button Classes="ghost small" Content="复制" Click="CopyLog_Click" />
+                  <Button Classes="ghost small" Content="打开日志文件" Click="OpenLogFile_Click" />
+                </StackPanel>
+              </Grid>
+              <ScrollViewer Grid.Row="1" x:Name="LogScroll" Margin="0,4,0,0">
+                <SelectableTextBlock x:Name="LogText" FontFamily="Consolas, Microsoft YaHei UI" FontSize="11"
+                                     Foreground="{DynamicResource TextSecondary}" />
+              </ScrollViewer>
+            </Grid>
+          </Border>
+        </Grid>
+      </Grid>
+    </Grid>
+  </Border>
+</Window>

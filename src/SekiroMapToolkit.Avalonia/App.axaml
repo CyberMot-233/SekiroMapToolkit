@@ -1,0 +1,42 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="SekiroMapToolkit.App"
+             RequestedThemeVariant="Dark">
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <SolidColorBrush x:Key="BgBase" Color="#070B12" />
+      <SolidColorBrush x:Key="BgDeep" Color="#05080E" />
+      <SolidColorBrush x:Key="Panel" Color="#E00B121E" />
+      <SolidColorBrush x:Key="PanelSolid" Color="#0B121B" />
+      <SolidColorBrush x:Key="PanelHeader" Color="#0F1A26" />
+      <SolidColorBrush x:Key="Line" Color="#1A2A3C" />
+      <SolidColorBrush x:Key="LineSoft" Color="#132030" />
+      <SolidColorBrush x:Key="Accent" Color="#38D7E8" />
+      <SolidColorBrush x:Key="AccentDim" Color="#1E6E7A" />
+      <SolidColorBrush x:Key="AccentBlue" Color="#2F8BFF" />
+      <SolidColorBrush x:Key="Glow" Color="#35E0D0" />
+      <SolidColorBrush x:Key="Warn" Color="#F2D65C" />
+      <SolidColorBrush x:Key="Danger" Color="#FF6B6B" />
+      <SolidColorBrush x:Key="TextPrimary" Color="#E8F3F9" />
+      <SolidColorBrush x:Key="TextSecondary" Color="#93A9BC" />
+      <SolidColorBrush x:Key="TextMuted" Color="#5C7186" />
+      <SolidColorBrush x:Key="NavHover" Color="#101B28" />
+      <SolidColorBrush x:Key="NavActive" Color="#0F2A33" />
+
+      <LinearGradientBrush x:Key="AccentGradient" StartPoint="0%,0%" EndPoint="100%,100%">
+        <GradientStop Color="#2F8BFF" Offset="0" />
+        <GradientStop Color="#35E0D0" Offset="1" />
+      </LinearGradientBrush>
+      <LinearGradientBrush x:Key="AccentGradientSoft" StartPoint="0%,0%" EndPoint="100%,100%">
+        <GradientStop Color="#1B4A66" Offset="0" />
+        <GradientStop Color="#175C57" Offset="1" />
+      </LinearGradientBrush>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme />
+    <StyleInclude Source="avares://SekiroMapToolkit/Styles/Theme.axaml" />
+  </Application.Styles>
+</Application>

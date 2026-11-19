@@ -1,0 +1,26 @@
+# 构建产物
+bin/
+obj/
+_publish/
+_pubtest/
+_stage/
+
+# 本地临时素材
+_bg*/
+_thumbs/
+_*.png
+!docs/screenshots/*.png
+
+# 运行期数据
+tools/
+config.json
+*.log
+
+# 发布物（放 Releases，不进 git）
+SekiroMapToolkit.exe
+oo2core_6_win64.dll
+
+# 版权资产（Epic Oodle），不进 git；SoulsFormats 是 MIT，随源码一起分发
+*.dll
+!SoulsFormats.dll
+_publish2/
